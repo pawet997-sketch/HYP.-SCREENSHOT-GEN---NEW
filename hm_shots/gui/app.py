@@ -59,5 +59,9 @@ def run(argv: Optional[List[str]] = None, demo: bool = False, session: str = "")
     # so the window is simply shown (non-blocking).  Standalone we created the
     # QApplication ourselves and have to run the loop.
     if created:
+        quit_ms = os.environ.get("HM_SHOTS_AUTOQUIT_MS")
+        if quit_ms:
+            from .qt import QtCore
+            QtCore.QTimer.singleShot(int(quit_ms), app.quit)   # headless smoke tests
         exec_(app)
     return _window
